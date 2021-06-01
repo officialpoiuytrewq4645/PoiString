@@ -1,0 +1,7 @@
+﻿[*.cs]
+
+# CS0649: Field 'DurabilityModule.integrity' is never assigned to, and will always have its default value 0
+dotnet_diagnostic.CS0649.severity = none
+
+# IDE0052: Remove unread private members
+dotnet_diagnostic.IDE0052.severity = none
