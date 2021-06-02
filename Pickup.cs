@@ -1,6 +1,6 @@
 ﻿namespace PoiString.AttTypes.Components
 {
-    class Pickup : ATTSerializableComponent
+    public class Pickup : ATTSerializableComponent
     {
         public int lastInteractorPlayerId;
     }

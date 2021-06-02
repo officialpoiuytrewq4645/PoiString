@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PoiString.AttTypes.Components
 {
-    class NetworkRigidbody : ATTSerializableComponent
+    public class NetworkRigidbody : ATTSerializableComponent
     {
         public float PosX;
         public float PosY;

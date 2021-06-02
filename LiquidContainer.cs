@@ -9,7 +9,7 @@ using PoiString.AttTypes.Components.ValueTypes;
 namespace PoiString.AttTypes.Components
 {
 
-    class LiquidContainer : ATTSerializableComponent//, IHasSpecialOperation
+    public class LiquidContainer : ATTSerializableComponent//, IHasSpecialOperation
     {
         public bool canAddTo;
         public bool canRemoveFrom;
@@ -78,7 +78,7 @@ namespace PoiString.AttTypes.Components
         //}
     }
     
-    internal class CustomData
+    public class CustomData
     {
         public Color color;
         public bool isConsumableThroughSkin;
@@ -87,14 +87,14 @@ namespace PoiString.AttTypes.Components
         public Hash<FoodChunk>[] foodChunks;
     }
     [ClassIgnoresCustomClassRules]
-    internal class Color 
+    public class Color 
     {
         public float r;
         public float g;
         public float b;
         public float a;
     }
-    internal class Effect
+    public class Effect
     {
         public uint EffectHash;
         public float strengthMultiplier;

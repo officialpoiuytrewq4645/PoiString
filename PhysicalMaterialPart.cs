@@ -3,9 +3,10 @@ using PoiString.Knowledge;
 
 namespace PoiString.AttTypes.Components
 {
-    class PhysicalMaterialPart : ATTSerializableComponent//, IHasSpecialOperation
+    public class PhysicalMaterialPart : ATTSerializableComponent//, IHasSpecialOperation
     {
-        public Hash<PhysicalMaterial> Hash;
+        //public Hash<PhysicalMaterial> Hash;
+        public uint Hash;
         //private string Material_Name;
         //public PhysicalMaterialPart(string matname)
         //{

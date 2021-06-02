@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace PoiString.AttTypes.Components
 {
     [Version(3)]
-    class BasicDecay : ATTSerializableComponent
+    public class BasicDecay : ATTSerializableComponent
     {
         public bool isDisabled;
         public TimeSpan timelineEntry;

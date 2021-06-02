@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PoiString.AttTypes.Components
 {
-    class PickupDock : ATTSerializableComponent
+    public class PickupDock : ATTSerializableComponent
     {
         public uint dockedTypeHash;
         public int quantity;

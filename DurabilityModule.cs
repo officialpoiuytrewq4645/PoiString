@@ -1,6 +1,6 @@
 ﻿namespace PoiString.AttTypes.Components
 {
-    class DurabilityModule : ATTSerializableComponent
+    public class DurabilityModule : ATTSerializableComponent
     {
         public float integrity;
     }

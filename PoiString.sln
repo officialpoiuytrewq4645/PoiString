@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoiString Test", "..\PoiString Test\PoiString Test.csproj", "{CDE02ECF-262C-443D-B771-FD9ECEB80F45}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,10 @@ Global
 		{A045F85C-6A61-42CB-8053-D67BCC5ECBA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A045F85C-6A61-42CB-8053-D67BCC5ECBA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A045F85C-6A61-42CB-8053-D67BCC5ECBA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDE02ECF-262C-443D-B771-FD9ECEB80F45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDE02ECF-262C-443D-B771-FD9ECEB80F45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDE02ECF-262C-443D-B771-FD9ECEB80F45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDE02ECF-262C-443D-B771-FD9ECEB80F45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

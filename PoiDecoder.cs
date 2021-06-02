@@ -10,7 +10,7 @@ using PoiString.Knowledge;
 
 namespace PoiString
 {
-    static class PoiDecoder
+    public static class PoiDecoder
     {
 
         public static NetworkPrefab GetPrefabFromString(string ATTString)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PoiString.AttTypes.Components
 {
-    class FallbackSerializedType : ATTSerializableComponent
+    public class FallbackSerializedType : ATTSerializableComponent
     {
         public string name;
         //public string data;
