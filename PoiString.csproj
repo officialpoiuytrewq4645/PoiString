@@ -48,30 +48,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ATTSerializableComponent.cs" />
-    <Compile Include="BasicDecay.cs" />
-    <Compile Include="ChildNetworkPrefab.cs" />
-    <Compile Include="DurabilityModule.cs" />
-    <Compile Include="EthynReader.cs" />
-    <Compile Include="FallbackSerializedType.cs" />
-    <Compile Include="FoodChunk.cs" />
-    <Compile Include="Hash.cs" />
-    <Compile Include="InfoBoard.cs" />
-    <Compile Include="KnowledgeManager.cs" />
-    <Compile Include="KnownComponents.cs" />
-    <Compile Include="KnownMaterialHashes.cs" />
-    <Compile Include="LiquidContainer.cs" />
-    <Compile Include="NetworkPrefab.cs" />
-    <Compile Include="NetworkRigidbody.cs" />
-    <Compile Include="PhysicalMaterial.cs" />
-    <Compile Include="PhysicalMaterialPart.cs" />
-    <Compile Include="Pickup.cs" />
-    <Compile Include="PickupDock.cs" />
-    <Compile Include="PoiDecoder.cs" />
-    <Compile Include="PoiStentions.cs" />
-    <Compile Include="PoiWriter.cs" />
+    <Compile Include="Components\ATTSerializableComponent.cs" />
+    <Compile Include="Components\BasicDecay.cs" />
+    <Compile Include="Components\ChildNetworkPrefab.cs" />
+    <Compile Include="Components\DurabilityModule.cs" />
+    <Compile Include="Serialization\EthynReader.cs" />
+    <Compile Include="Components\FallbackSerializedType.cs" />
+    <Compile Include="Components\FoodChunk.cs" />
+    <Compile Include="Knowledge\Hash.cs" />
+    <Compile Include="Components\InfoBoard.cs" />
+    <Compile Include="Knowledge\KnowledgeManager.cs" />
+    <Compile Include="Knowledge\KnownComponents.cs" />
+    <Compile Include="Knowledge\KnownMaterialHashes.cs" />
+    <Compile Include="Components\LiquidContainer.cs" />
+    <Compile Include="Components\NetworkPrefab.cs" />
+    <Compile Include="Components\NetworkRigidbody.cs" />
+    <Compile Include="Knowledge\NewKnowledge\PhysicalMaterial.cs" />
+    <Compile Include="Components\PhysicalMaterialPart.cs" />
+    <Compile Include="Components\Pickup.cs" />
+    <Compile Include="Components\PickupDock.cs" />
+    <Compile Include="Serialization\PoiDecoder.cs" />
+    <Compile Include="Serialization\PoiStentions.cs" />
+    <Compile Include="Serialization\PoiWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StatManager.cs" />
+    <Compile Include="Components\StatManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
