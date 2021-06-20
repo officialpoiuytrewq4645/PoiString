@@ -84,16 +84,10 @@ namespace PoiString.AttTypes.Components
         public bool isConsumableThroughSkin;
         public uint visualDataHash;
         public Effect[] effects;
-        public Hash<FoodChunk>[] foodChunks;
+        //public Hash<FoodChunk>[] foodChunks;
+        public uint[] foodChunks;
     }
-    [ClassIgnoresCustomClassRules]
-    public class Color 
-    {
-        public float r;
-        public float g;
-        public float b;
-        public float a;
-    }
+    
     public class Effect
     {
         public uint EffectHash;

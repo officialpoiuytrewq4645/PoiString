@@ -132,6 +132,10 @@ namespace PoiString
 
             uint length = ReadUint16();
 
+            if(length == 0)
+            {
+                return "";
+            }
             
             while (_position % 8 != 0)
             {
@@ -205,6 +209,36 @@ namespace PoiString
             return Read(1)[0];
         }
 
-
+        //public void ReadBytes(byte[] bytes, int byteCount)
+        //{
+        //    int num = (4 - this.bitIndex / 8) % 4;
+        //    if (num > byteCount)
+        //    {
+        //        num = byteCount;
+        //    }
+        //    for (int i = 0; i < num; i++)
+        //    {
+        //        bytes[i] = (byte)this.ReadBits(8);
+        //    }
+        //    if (num == byteCount)
+        //    {
+        //        return;
+        //    }
+        //    int num2 = (byteCount - num) / 4;
+        //    if (num2 > 0)
+        //    {
+        //        Buffer.BlockCopy(this.data, (int)(this.wordIndex * 4U), bytes, num, num2 * 4);
+        //        this.wordIndex += (uint)num2;
+        //        this.bitsRead += (uint)(num2 * 32);
+        //        this.scratch = 0UL;
+        //        this.LoadData();
+        //    }
+        //    int num3 = num + num2 * 4;
+        //    int num4 = byteCount - num3;
+        //    for (int j = 0; j < num4; j++)
+        //    {
+        //        bytes[num3 + j] = (byte)this.ReadBits(8);
+        //    }
+        //}
     }
 }

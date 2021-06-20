@@ -103,7 +103,15 @@ namespace PoiString
                 List<bool> substream = new List<bool>();
                 if (component is FallbackSerializedType)
                 {
-                    SerializeUInt(stream, Knowledge.KnownComponents.InverseKnowledge[(component as FallbackSerializedType).name]);
+                    if (Knowledge.KnownComponents.InverseKnowledge.TryGetValue((component as FallbackSerializedType).name, out uint value))
+                    {
+                        SerializeUInt(stream, value);
+                    }
+                    else
+                    {
+                        SerializeUInt(stream, uint.Parse((component as FallbackSerializedType).name));
+                    }
+                    //SerializeUInt(stream, Knowledge.KnownComponents.InverseKnowledge[(component as FallbackSerializedType).name]);
                 }
                 else
                 {
@@ -154,11 +162,11 @@ namespace PoiString
             {
                 //ignore
             }
-            //else if (valtype == typeof(string))
-            //{
-            //    ComponentSize += SerializeString(substream, (string)val.GetValue(component));
+            else if (valtype == typeof(string))
+            {
+                ComponentSize += SerializeString(stream, (string)val.GetValue(component));
 
-            //}
+            }
             else if (valtype == typeof(TimeSpan))
             {
                 SerializeTimeSpan(stream, (TimeSpan)val.GetValue(component));
@@ -221,11 +229,50 @@ namespace PoiString
 
             //uint length = ReadUint16();
 
-
+            if (ToSerialize.Length == 0)
+            {
+                return ComponentLength;
+            }
+            //align
             while (stream.Count % 8 != 0)
             {
                 stream.Add(false);
+                ComponentLength += 1;
             }
+
+            //attcode
+            //byte[] bytes = Encoding.ASCII.GetBytes(ToSerialize);
+            //int byteCount = ToSerialize.Length;
+
+            //int num = (4 - stream.Count / 8) % 4;
+
+            //if (num > byteCount)
+            //{
+            //    num = byteCount;
+            //}
+            //for (int i = 0; i < num; i++)
+            //{
+            //    this.WriteBits((uint)bytes[i], 8);
+            //}
+            //if (num == byteCount)
+            //{
+            //    return;
+            //}
+            //int num2 = (byteCount - num) / 4;
+            //if (num2 > 0)
+            //{
+            //    Buffer.BlockCopy(bytes, num, this.data, (int)(this.wordIndex * 4U), num2 * 4);
+            //    this.wordIndex += (uint)num2;
+            //    this.bitsWritten += (uint)(num2 * 32);
+            //    this.scratch = 0UL;
+            //}
+            //int num3 = num + num2 * 4;
+            //int num4 = byteCount - num3;
+            //for (int j = 0; j < num4; j++)
+            //{
+            //    this.WriteBits((uint)bytes[num3 + j], 8);
+            //}
+
 
             ////this may be needed
             uint wordpos = (uint)(stream.Count % 32) / 8;
