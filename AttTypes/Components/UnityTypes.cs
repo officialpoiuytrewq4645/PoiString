@@ -27,5 +27,13 @@ namespace PoiString.AttTypes.Components
         public float y;
         public float z;
     }
+    [ClassIgnoresCustomClassRules]
+    public class Quaternion
+    {
+        public float x;
+        public float y;
+        public float z;
+        public float w;
+    }
 
 }

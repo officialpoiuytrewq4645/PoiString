@@ -5,6 +5,14 @@ namespace PoiString
 {
     public static class PoiStentions
     {
+        //public PoiString.AttTypes.Components.Color RGBToColor(string rgb)
+        //{
+
+        //}
+        public static string GetAsATTString(AttTypes.NetworkPrefab prefab)
+        {
+            return UintArrayToString(StreamToAttUintArray(PoiWriter.SerializePrefab(prefab)));
+        }
         public static uint HashComponentName(string Name)
         {
             int hash1 = 5381;

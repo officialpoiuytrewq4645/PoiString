@@ -109,7 +109,7 @@ namespace PoiString
         {
 
             bool[] bits = Read(32);
-            Console.WriteLine(bits.BoolArrayToString());
+            //Console.WriteLine(bits.BoolArrayToString());
             //bool IsPositive = bits[0];
             //bits[0] = !bits[0];
             //bits[0] = false;

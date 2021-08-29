@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PoiString.AttTypes.Components
 {
-    class MapBoard : ATTSerializableComponent
+    public class MapBoard : ATTSerializableComponent
     {
         public uint mapHash;
         public int unlockPieceIndex;

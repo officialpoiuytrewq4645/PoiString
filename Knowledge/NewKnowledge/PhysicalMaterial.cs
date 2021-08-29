@@ -33,4 +33,5 @@ namespace PoiString.AttTypes.Components.ValueTypes
         public static readonly uint Redwood = 10962;
         public static readonly uint Walnut = 15500;
     }
+    
 }

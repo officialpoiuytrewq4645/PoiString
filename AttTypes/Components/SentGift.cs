@@ -29,7 +29,7 @@ namespace PoiString.AttTypes.Components
     }
     public class SavableSavedDynamicObject
     {
-        public uint[] data;
+        public uint[] darta;
         public uint messageSizeInBytes;
         public uint hash;
         public uint[] chunkversioning;

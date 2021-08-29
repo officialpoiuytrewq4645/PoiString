@@ -121,81 +121,95 @@ namespace PoiString
 
                 foreach (FieldInfo val in component.GetSerializableFields())
                 {
-                    SerializeField(substream, val, component, ref ComponentSize);
+                    SerializeField(substream, val, component, ref ComponentSize, stream.Count);
                 }
                 SerializeUInt(stream, ComponentSize);
+                component.BitSize = ComponentSize;
                 stream.AddRange(substream);
             }
             //end of components identifier
             SerializeUInt(stream, 0);
         }
-        private static void SerializeField(List<bool> stream, FieldInfo val, object component, ref uint ComponentSize)
+        private static void SerializeField(List<bool> stream, FieldInfo val, object component, ref uint ComponentSize, int StringPos)
         {
             Type valtype = val.FieldType;
-            if (valtype == typeof(uint))
+            SerializeValue(stream, val.Name, val.GetValue(component), valtype, ref ComponentSize, StringPos);
+        }
+        private static void SerializeValue(List<bool> stream, string fieldname, object value, Type type, ref uint ComponentSize, int StringPos)
+        {
+
+            if (type == typeof(uint))
             {
-                SerializeUInt(stream, (uint)val.GetValue(component));
+                SerializeUInt(stream, (uint)value);
                 ComponentSize += 32;
             }
-            else if (valtype == typeof(float))
+            else if (type == typeof(float))
             {
-                SerializeFloat(stream, (float)val.GetValue(component));
+                SerializeFloat(stream, (float)value);
                 ComponentSize += 32;
             }
-            else if (valtype == typeof(int))
+            else if (type == typeof(int))
             {
-                SerializeInt(stream, (int)val.GetValue(component));
+                SerializeInt(stream, (int)value);
                 ComponentSize += 32;
             }
-            else if (valtype == typeof(bool))
+            else if (type == typeof(bool))
             {
-                SerializeBool(stream, (bool)val.GetValue(component));
+                SerializeBool(stream, (bool)value);
                 ComponentSize += 1;
             }
-            else if (valtype == typeof(bool[]) && val.Name == "data")
+            else if (type == typeof(bool[]) && fieldname == "data")
             {
                 //val.SetValue(this, reader.Read(remainingdata).BoolArrayToString());
-                stream.AddRange((bool[])val.GetValue(component));
-                ComponentSize += (uint)((bool[])val.GetValue(component)).Length;
+                stream.AddRange((bool[])value);
+                ComponentSize += (uint)((bool[])value).Length;
             }
-            else if (valtype == typeof(string) && val.Name == "name" && component is FallbackSerializedType)
+            else if (type == typeof(string) && fieldname == "name" && type == typeof(FallbackSerializedType))
             {
                 //ignore
             }
-            else if (valtype == typeof(string))
+            else if (type == typeof(string))
             {
-                ComponentSize += SerializeString(stream, (string)val.GetValue(component));
+                ComponentSize += SerializeString(stream, (string)value, StringPos);
 
             }
-            else if (valtype == typeof(TimeSpan))
+            else if (type == typeof(TimeSpan))
             {
-                SerializeTimeSpan(stream, (TimeSpan)val.GetValue(component));
+                SerializeTimeSpan(stream, (TimeSpan)value);
                 ComponentSize += 64;
             }
-            else if (valtype.IsArray && valtype.Namespace == valtype.Namespace)
+            else if (type.IsArray && type.Namespace == type.Namespace)
             {
-                SerializeArray(stream, valtype, (object[])val.GetValue(component), ref ComponentSize);  //valtype.GetElementType(), reader, ref remainingdata));
+                SerializeArray(stream, type, (System.Collections.IList)value, ref ComponentSize, StringPos);  //valtype.GetElementType(), reader, ref remainingdata));
             }
-            else if (valtype.Namespace == valtype.Namespace)
+            else if (type.Namespace == type.Namespace)
             {
-                SerializeCustomType(stream, valtype, (object)val.GetValue(component), ref ComponentSize);
+                SerializeCustomType(stream, type, (object)value, ref ComponentSize, StringPos);
             }
             else
             {
-                throw new Exception($"no serializer found for type {valtype.Name}");
+                throw new Exception($"no serializer found for type {type.Name}");
             }
         }
-        private static void SerializeArray(List<bool> stream, Type type, object[] ToSerialize, ref uint componentSize)
+        private static void SerializeArray(List<bool> stream, Type type, System.Collections.IList ToSerialize, ref uint componentSize, int StringPos)
         {
             //array length
-            SerializeUInt(stream, (uint)ToSerialize.Length);
-            componentSize += 32;
-            foreach (object item in ToSerialize)
+            uint length = 0;
+            if(ToSerialize != null)
             {
-                SerializeCustomType(stream, type.GetElementType(), item, ref componentSize);
+                length = (uint)ToSerialize.Count;
+            }
+            SerializeUInt(stream, length);
+            componentSize += 32;
+            if (ToSerialize.Count > 0)
+            {
+                foreach (object item in ToSerialize)
+                {
+                    SerializeCustomType(stream, type.GetElementType(), item, ref componentSize, StringPos);
+                }
             }
         }
-        private static void SerializeCustomType(List<bool> stream, Type type, object ToSerialize, ref uint componentSize)
+        private static void SerializeCustomType(List<bool> stream, Type type, object ToSerialize, ref uint componentSize, int StringPos)
         {
             bool HasNullCheck = type.IsClass && Attribute.GetCustomAttribute(type, typeof(ClassIgnoresCustomClassRules)) == null;
             if (HasNullCheck)
@@ -208,9 +222,31 @@ namespace PoiString
                 }
                 foreach (FieldInfo val in type.GetFields(BindingFlags.Public | BindingFlags.Instance))
                 {
-                    SerializeField(stream, val, ToSerialize, ref componentSize);
+                    SerializeField(stream, val, ToSerialize, ref componentSize, StringPos);
                 }
             }
+            else
+            {
+                //if you dont include a unity field
+                if (ToSerialize == null)
+                {
+                    ToSerialize = Activator.CreateInstance(type);
+                }
+                if (type.IsClass)
+                {
+                    foreach (FieldInfo val in type.GetFields(BindingFlags.Public | BindingFlags.Instance))
+                    {
+                        SerializeField(stream, val, ToSerialize, ref componentSize, StringPos);
+                    }
+                }
+                else
+                {
+                    SerializeValue(stream, "", ToSerialize, type, ref componentSize, StringPos);
+                }
+
+            }
+
+
         }
 
 
@@ -220,7 +256,7 @@ namespace PoiString
             SerializeUInt64(substream, *(ulong*)&timeSpan);
         }
 
-        private static uint SerializeString(List<bool> stream, string ToSerialize)
+        private static uint SerializeString(List<bool> stream, string ToSerialize, int StringPos)
         {
             uint ComponentLength = 0;
             //length
@@ -234,49 +270,14 @@ namespace PoiString
                 return ComponentLength;
             }
             //align
-            while (stream.Count % 8 != 0)
+            while ((StringPos + stream.Count) % 8 != 0)
             {
                 stream.Add(false);
                 ComponentLength += 1;
             }
 
-            //attcode
-            //byte[] bytes = Encoding.ASCII.GetBytes(ToSerialize);
-            //int byteCount = ToSerialize.Length;
-
-            //int num = (4 - stream.Count / 8) % 4;
-
-            //if (num > byteCount)
-            //{
-            //    num = byteCount;
-            //}
-            //for (int i = 0; i < num; i++)
-            //{
-            //    this.WriteBits((uint)bytes[i], 8);
-            //}
-            //if (num == byteCount)
-            //{
-            //    return;
-            //}
-            //int num2 = (byteCount - num) / 4;
-            //if (num2 > 0)
-            //{
-            //    Buffer.BlockCopy(bytes, num, this.data, (int)(this.wordIndex * 4U), num2 * 4);
-            //    this.wordIndex += (uint)num2;
-            //    this.bitsWritten += (uint)(num2 * 32);
-            //    this.scratch = 0UL;
-            //}
-            //int num3 = num + num2 * 4;
-            //int num4 = byteCount - num3;
-            //for (int j = 0; j < num4; j++)
-            //{
-            //    this.WriteBits((uint)bytes[num3 + j], 8);
-            //}
-
-
             ////this may be needed
-            uint wordpos = (uint)(stream.Count % 32) / 8;
-
+            uint wordpos = (uint)((StringPos + stream.Count) % 32) / 8;
 
             //for (int i = 0; i < length; i++)
             //{
@@ -288,7 +289,10 @@ namespace PoiString
             //finish current word
             for (; wordpos < 4; j++, wordpos++)
             {
-                correctedOutput += ToSerialize[j];
+                if (ToSerialize.Length > j)
+                {
+                    correctedOutput += ToSerialize[j];
+                }
             }
             //serialize in reverse order
             for (; j + 4 <= ToSerialize.Length; j += 4)

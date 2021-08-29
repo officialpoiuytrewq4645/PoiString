@@ -23,14 +23,17 @@ namespace PoiString.AttTypes
         public List<ATTEmbededEntity> EmbededEntities = new List<ATTEmbededEntity>();
         public List<ChildNetworkPrefab> Children = new List<ChildNetworkPrefab>();
         //public string UnprocessedData;
-
     }
     public class ATTEmbededEntity
     {
         public uint hash;
         public uint size;
-        public bool isAlive;
+        public bool isAlive = true;
         public List<ATTSerializableComponent> Components = new List<ATTSerializableComponent>();
+        public override string ToString()
+        {
+            return hash.ToString();
+        }
     }
 }
 

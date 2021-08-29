@@ -96,60 +96,70 @@ namespace PoiString.AttTypes.Components
             {
                 //do nuffin
             }
-            else if (valtype == typeof(uint))
+            else
             {
-                val.SetValue(target, reader.ReadUint());
-                remainingdata -= 32;
+                val.SetValue(target, AnalyzeValue(valtype, val.Name, reader, ref remainingdata));
             }
-            else if (valtype == typeof(float))
+        }
+        public object AnalyzeValue(Type type, string isdata, EthynReader reader, ref uint remainingdata)
+        {
+            
+            if (type == typeof(uint))
             {
-                val.SetValue(target, reader.ReadFloat());
                 remainingdata -= 32;
+                return reader.ReadUint();
             }
-            else if (valtype == typeof(bool))
+            else if (type == typeof(float))
             {
-                val.SetValue(target, reader.ReadBool());
+                remainingdata -= 32;
+                return reader.ReadFloat();
+            }
+            else if (type == typeof(bool))
+            {
                 remainingdata -= 1;
+                return reader.ReadBool();
             }
-            else if (valtype == typeof(int))
+            else if (type == typeof(int))
             {
-                val.SetValue(target, reader.ReadInt());
                 remainingdata -= 32;
+                return reader.ReadInt();
             }
-            else if (valtype == typeof(bool[]) && val.Name == "data")
+            else if (type == typeof(bool[]) && isdata == "data")
             {
-                val.SetValue(target, reader.Read(remainingdata));
+                return reader.Read(remainingdata);
             }
-            else if (valtype == typeof(string))
+            else if (type == typeof(string))
             {
                 string value = reader.ReadString();
-                val.SetValue(target, value);
                 remainingdata -= (uint)((value.Length * 8) + 16);
+                return value;
             }
-            else if (valtype == typeof(TimeSpan))
+            else if (type == typeof(TimeSpan))
             {
-                val.SetValue(target, reader.ReadTimespan());
-
                 remainingdata -= 32;
+                return reader.ReadTimespan();
             }
-            else if (valtype.IsArray && valtype.Namespace == valtype.Namespace)
+            else if (type.IsArray && type.Namespace == type.Namespace)
             {
-                val.SetValue(target, ReadArray(valtype.GetElementType(), reader, ref remainingdata));
+                return ReadArray(type.GetElementType(), reader, ref remainingdata);
             }
-            else if (valtype.Namespace == valtype.Namespace)
+            else if (type.Namespace == type.Namespace)
             {
-                val.SetValue(target, ReadCustomType(valtype, reader, ref remainingdata));
+                return ReadCustomType(type, reader, ref remainingdata);
             }
             else
             {
-                throw new Exception($"no deserializer found for type {valtype.Name}");
+                throw new Exception($"no deserializer found for type {type.Name}");
             }
         }
-        public object[] ReadArray(Type type, EthynReader reader, ref uint remainingdata)
+
+
+
+        public System.Collections.IList ReadArray(Type type, EthynReader reader, ref uint remainingdata)
         {
             uint size = reader.ReadUint();
             remainingdata -= 32;
-            object[] data = (object[])Array.CreateInstance(type, size);
+            System.Collections.IList data = (System.Collections.IList)Array.CreateInstance(type, size);
 
             for (int i = 0; i < size; i++)
             {
@@ -171,10 +181,18 @@ namespace PoiString.AttTypes.Components
                     return null;
                 }
             }
+            //if type isnt class do thing
             object data = Activator.CreateInstance(type);
-            foreach (FieldInfo val in type.GetFields(BindingFlags.Public | BindingFlags.Instance))
+            if(type.IsClass)
             {
-                AnalyzeField(val, reader, data, ref remainingdata);
+                foreach (FieldInfo val in type.GetFields(BindingFlags.Public | BindingFlags.Instance))
+                {
+                    AnalyzeField(val, reader, data, ref remainingdata);
+                }
+            }
+            else
+            {
+                data = AnalyzeValue(type, "", reader, ref remainingdata);
             }
             return data;
         }

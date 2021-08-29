@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PoiString.AttTypes.Components
 {
-    class Landmark : ATTSerializableComponent
+    public class Landmark : ATTSerializableComponent
     {
         //public MarkerInfo[] Markers;
         public uint Index;
