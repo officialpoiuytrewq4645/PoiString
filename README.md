@@ -2,7 +2,7 @@
 <b>THIS IS AN ADVANCED TOOL IN IT'S CURRENT STATE<b/>  
 This is a tool for creation and modification of ATT Strings, a save format used by the vr game A Township Tale
 
-Example
+Example for building a weapon
 ```
 using PoiString.AttTypes;
 using PoiString.AttTypes.Components.ValueTypes;
@@ -42,4 +42,20 @@ using PoiString.Knowledge;
 
             }
         }
-  
+  ```
+Example for deconstructing a string
+```
+using PoiString.AttTypes;
+using PoiString.AttTypes.Components.ValueTypes;
+using PoiString.Knowledge;
+  static void Main(string[] args)
+        {
+            KnowledgeManager.InitializeStructure();
+            NetworkPrefab prefab = PoiDecoder.GetPrefabFromString("STRING GOES HERE");
+            Console.WriteLine(PoiStentions.UintArrayToString(PoiStentions.StreamToAttUintArray(PoiWriter.SerializePrefab(prefab))));
+            while (true)
+            {
+
+            }
+        }
+```
