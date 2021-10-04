@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PoiString.AttTypes.Components
 {
-    public class RepairBox
+    public class RepairBox : ATTSerializableComponent
     {
         public Item[] items;
         public bool isRepeatable;

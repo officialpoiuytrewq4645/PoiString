@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PoiString.AttTypes.Components
 {
-    class SkillShrine :ATTSerializableComponent
+    class SkillShrine : ATTSerializableComponent
     {
         public int ProgressionPathEnum;
     }
