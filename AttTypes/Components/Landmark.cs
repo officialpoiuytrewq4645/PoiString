@@ -18,6 +18,16 @@ namespace PoiString.AttTypes.Components
         public uint FindActionAcheivementHash;
     }
 
+    public enum DiscoveryState
+    {
+        // Token: 0x04005BDF RID: 23519
+        None,
+        // Token: 0x04005BE0 RID: 23520
+        Aware,
+        // Token: 0x04005BE1 RID: 23521
+        Discovered
+    }
+
     //public class MarkerInfo
     //{
     //    public uint mapHash;

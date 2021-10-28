@@ -264,7 +264,7 @@ namespace PoiString
             ComponentLength += 16;
 
             //uint length = ReadUint16();
-
+            
             if (ToSerialize.Length == 0)
             {
                 return ComponentLength;
@@ -303,29 +303,36 @@ namespace PoiString
                 correctedOutput += ToSerialize[j];
             }
             //this could be done better
+            //i think its better now
             if (j != ToSerialize.Length)
             {
-                switch (ToSerialize.Length - j)
+                
+                for (; j < ToSerialize.Length; j++)
                 {
-                    case 3:
-                    {
-                        correctedOutput += ToSerialize[j + 2];
-                        correctedOutput += ToSerialize[j + 1];
-                        correctedOutput += ToSerialize[j];
-                        break;
-                    }
-                    case 2:
-                    {
-                        correctedOutput += ToSerialize[j + 1];
-                        correctedOutput += ToSerialize[j];
-                        break;
-                    }
-                    case 1:
-                    {
-                        correctedOutput += ToSerialize[j];
-                        break;
-                    }
+                    correctedOutput += ToSerialize[j];
                 }
+                //switch (ToSerialize.Length - j)
+                //{
+
+                //    case 3:
+                //    {
+                //        correctedOutput += ToSerialize[j + 2];
+                //        correctedOutput += ToSerialize[j + 1];
+                //        correctedOutput += ToSerialize[j];
+                //        break;
+                //    }
+                //    case 2:
+                //    {
+                //        correctedOutput += ToSerialize[j + 1];
+                //        correctedOutput += ToSerialize[j];
+                //        break;
+                //    }
+                //    case 1:
+                //    {
+                //        correctedOutput += ToSerialize[j];
+                //        break;
+                //    }
+                //}
             }
 
             foreach (char letter in correctedOutput)
