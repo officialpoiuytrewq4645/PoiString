@@ -163,29 +163,34 @@ namespace PoiString
                 correctedOutput += Output[j + 1];
                 correctedOutput += Output[j];
             }
+            //whoops forgot this one
             if (j != Output.Length)
             {
-                switch (Output.Length - j)
+                for (; j < Output.Length; j++)
                 {
-                    case 3:
-                    {
-                        correctedOutput += Output[j + 2];
-                        correctedOutput += Output[j + 1];
-                        correctedOutput += Output[j];
-                        break;
-                    }
-                    case 2:
-                    {
-                        correctedOutput += Output[j + 1];
-                        correctedOutput += Output[j];
-                        break;
-                    }
-                    case 1:
-                    {
-                        correctedOutput += Output[j];
-                        break;
-                    }
+                    correctedOutput += Output[j];
                 }
+                //switch (Output.Length - j)
+                //{
+                //    case 3:
+                //    {
+                //        correctedOutput += Output[j + 2];
+                //        correctedOutput += Output[j + 1];
+                //        correctedOutput += Output[j];
+                //        break;
+                //    }
+                //    case 2:
+                //    {
+                //        correctedOutput += Output[j + 1];
+                //        correctedOutput += Output[j];
+                //        break;
+                //    }
+                //    case 1:
+                //    {
+                //        correctedOutput += Output[j];
+                //        break;
+                //    }
+                //}
             }
 
             return correctedOutput;
