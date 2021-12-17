@@ -9,6 +9,6 @@ namespace PoiString.Serialization
     internal class Stream
     {
         public bool IsWriting;
-
+        private uint[] _stream;
     }
 }

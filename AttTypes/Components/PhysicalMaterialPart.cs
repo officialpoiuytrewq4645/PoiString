@@ -3,6 +3,7 @@ using PoiString.Knowledge;
 
 namespace PoiString.AttTypes.Components
 {
+    [System.Serializable]
     public class PhysicalMaterialPart : ATTSerializableComponent//, IHasSpecialOperation
     {
         //public Hash<PhysicalMaterial> Hash;
@@ -37,7 +38,6 @@ namespace PoiString.AttTypes.Components
         //    }
         //    else
         //    {
-        //        //todo error handling
         //    }
         //}
     }

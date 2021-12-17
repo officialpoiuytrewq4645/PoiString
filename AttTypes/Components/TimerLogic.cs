@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 namespace PoiString.AttTypes.Components
 {
     [System.Serializable]
-    public class WoodcutTree : ATTSerializableComponent
+    public class TimerLogic : ATTSerializableComponent
     {
-        public uint PresetHash;
-        public uint SpeciesHash;
+        public bool activeOnLoadSaved;
+        public bool timerResetsWhenRetriggeredSaved;
+        public float activeDurationSaved;
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace PoiString.AttTypes
 {
+    [System.Serializable]
     public class ChildNetworkPrefab
     {
         public uint parentHash;

@@ -4,6 +4,7 @@ using PoiString.AttTypes.Components;
 
 namespace PoiString.AttTypes
 {
+    
     public class NetworkPrefab
     {
         public uint PrefabHash;
@@ -23,7 +24,14 @@ namespace PoiString.AttTypes
         public List<ATTEmbededEntity> EmbededEntities = new List<ATTEmbededEntity>();
         public List<ChildNetworkPrefab> Children = new List<ChildNetworkPrefab>();
         //public string UnprocessedData;
+        public ChildNetworkPrefab AddChild(ChildNetworkPrefab child)
+        {
+            Children.Add(child);
+            return child;
+        }
     }
+
+    
     public class ATTEmbededEntity
     {
         public uint hash;

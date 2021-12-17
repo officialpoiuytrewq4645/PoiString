@@ -32,6 +32,19 @@ namespace PoiString
             }
 
         }
+        private EthynReader(uint length)
+        {
+            _stream = new bool[length];
+        }
+        public static EthynReader CreateFromReaderAndConsume(EthynReader ReadFrom, uint BoolAmount)
+        {
+            EthynReader Reader = new EthynReader(BoolAmount);
+            for (int i = 0; i < BoolAmount; i++)
+            {
+                Reader._stream[i] = ReadFrom.ReadBool();
+            }
+            return Reader;
+        }
         public bool[] GetStream()
         {
             return _stream;
@@ -142,7 +155,6 @@ namespace PoiString
                 _position++;
             }
 
-            //todo this may be needed
             uint wordpos = (_position % 32) / 8;
 
             for (int i = 0; i < length; i++)

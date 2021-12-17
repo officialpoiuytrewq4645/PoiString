@@ -2,6 +2,7 @@
 
 namespace PoiString.AttTypes.Components
 {
+    [System.Serializable]
     public class StatManager : ATTSerializableComponent
     {
         public Stat[] stats;
@@ -9,11 +10,13 @@ namespace PoiString.AttTypes.Components
         public IndirectStatModifier[] indirectStatModifiers;
     }
 
+    [System.Serializable]
     public class Stat
     {
         public uint StatHash;
         public float baseFlat;
     }
+    [System.Serializable]
     public class TimedModifier
     {
         public uint StatHash;
@@ -21,12 +24,14 @@ namespace PoiString.AttTypes.Components
         public bool isMultiplier;
         public TimeSpan time;
     }
+    [System.Serializable]
     public class IndirectStatModifier
     {
         public uint StatHash;
         public TimeSpan time;
         public IndirectModifierSaveData[] modifiers;
     }
+    [System.Serializable]
     public class IndirectModifierSaveData
     {
         public uint valueOverDurationHash;

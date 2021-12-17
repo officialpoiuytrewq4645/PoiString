@@ -165,7 +165,7 @@ namespace PoiString.Knowledge
             {320224849, "WheelGrab" },
             {4081488368, "WipeManager" },
             {276353327, "WoodcutPointCollection" },
-            {1098050191, "WoodcutTree" }
+            {1098050191, "WoodcutTree" },
         };
         public static Dictionary<string, uint> InverseKnowledge = new Dictionary<string, uint>();
         public static Dictionary<string, Type> StructuredTypes = new Dictionary<string, Type>();

@@ -9,6 +9,7 @@ using PoiString.AttTypes.Components.ValueTypes;
 namespace PoiString.AttTypes.Components
 {
 
+    [System.Serializable]
     public class LiquidContainer : ATTSerializableComponent//, IHasSpecialOperation
     {
         public bool canAddTo;
@@ -77,7 +78,8 @@ namespace PoiString.AttTypes.Components
         //    return Output;
         //}
     }
-    
+
+    [System.Serializable]
     public class CustomData
     {
         public Color color;
@@ -87,7 +89,8 @@ namespace PoiString.AttTypes.Components
         //public Hash<FoodChunk>[] foodChunks;
         public uint[] foodChunks;
     }
-    
+    [System.Serializable]
+
     public class Effect
     {
         public uint EffectHash;

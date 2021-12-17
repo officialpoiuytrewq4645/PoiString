@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace PoiString.AttTypes.Components
 {
+    [System.Serializable]
     public class WoodcutPointCollection : ATTSerializableComponent
     {
         public Element[] elements;
     }
+    [System.Serializable]
     public class Element
     {
         public float progress;

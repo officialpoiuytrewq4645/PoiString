@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace PoiString.AttTypes.Components
 {
+    [System.Serializable]
     [Version(3)]
     public class BasicDecay : ATTSerializableComponent
     {

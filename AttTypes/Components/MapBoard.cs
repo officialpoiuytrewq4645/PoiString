@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace PoiString.AttTypes.Components
 {
+    [System.Serializable]
     public class MapBoard : ATTSerializableComponent
     {
         public uint mapHash;

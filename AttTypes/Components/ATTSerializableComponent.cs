@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+
+using PoiString.Knowledge;
+
 namespace PoiString.AttTypes.Components
 {
+    
     public class ATTSerializableComponent : IATTSerializable
     {
         public uint BitSize;
@@ -88,6 +92,7 @@ namespace PoiString.AttTypes.Components
             {
                 (this as IHasSpecialOperation).PerformSpecialOperation();
             }
+            BitSize -= remainingdata;
         }
         public void AnalyzeField(FieldInfo val, EthynReader reader, object target, ref uint remainingdata)
         {
@@ -103,7 +108,7 @@ namespace PoiString.AttTypes.Components
         }
         public object AnalyzeValue(Type type, string isdata, EthynReader reader, ref uint remainingdata)
         {
-            
+
             if (type == typeof(uint))
             {
                 remainingdata -= 32;
@@ -139,21 +144,54 @@ namespace PoiString.AttTypes.Components
                 remainingdata -= 32;
                 return reader.ReadTimespan();
             }
-            else if (type.IsArray && type.Namespace == type.Namespace)
+            else if (type == typeof(List<IATTSerializable>))
+            {
+                return ReadBsery(type, reader, ref remainingdata);
+            }
+            else if (type.IsArray /*&& type.Namespace == type.Namespace*/)
             {
                 return ReadArray(type.GetElementType(), reader, ref remainingdata);
             }
-            else if (type.Namespace == type.Namespace)
+            else if (true/*type.Namespace == type.Namespace*/)
             {
                 return ReadCustomType(type, reader, ref remainingdata);
             }
-            else
-            {
-                throw new Exception($"no deserializer found for type {type.Name}");
-            }
+            //else
+            //{
+            //    throw new Exception($"no deserializer found for type {type.Name}");
+            //}
         }
 
+        private object ReadBsery(Type type, EthynReader reader, ref uint remainingdata)
+        {
+            remainingdata -= 32;
+            int num = reader.ReadInt();
+            List<IATTSerializable> Output = new List<IATTSerializable>();
+            for (int i = 0; i < num; i++)
+            {
+                uint test = reader.ReadUint();
+                if (KnownComponents.Knowledge.TryGetValue(test, out string ATTTypeName))
+                {
 
+
+                    if (KnownComponents.StructuredTypes.TryGetValue(ATTTypeName, out Type typer))
+                    {
+                        ATTSerializableComponent Component = (Activator.CreateInstance(typer) as ATTSerializableComponent);
+                        Component.InitFromReader(reader);
+                        Output.Add(Component);
+                    }
+                    else
+                    {
+                        Output.Add(new AttTypes.Components.FallbackSerializedType(reader, ATTTypeName));
+                    }
+                }
+                else
+                {
+                    Output.Add(new AttTypes.Components.FallbackSerializedType(reader, test.ToString()));
+                }
+            }
+            return Output;
+        }
 
         public System.Collections.IList ReadArray(Type type, EthynReader reader, ref uint remainingdata)
         {
@@ -183,7 +221,7 @@ namespace PoiString.AttTypes.Components
             }
             //if type isnt class do thing
             object data = Activator.CreateInstance(type);
-            if(type.IsClass)
+            if (type.IsClass)
             {
                 foreach (FieldInfo val in type.GetFields(BindingFlags.Public | BindingFlags.Instance))
                 {

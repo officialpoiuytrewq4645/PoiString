@@ -103,13 +103,13 @@ namespace PoiString
                 List<bool> substream = new List<bool>();
                 if (component is FallbackSerializedType)
                 {
-                    if (Knowledge.KnownComponents.InverseKnowledge.TryGetValue((component as FallbackSerializedType).name, out uint value))
+                    if (Knowledge.KnownComponents.InverseKnowledge.TryGetValue((component as FallbackSerializedType).FALLBACKNAMEAAA, out uint value))
                     {
                         SerializeUInt(stream, value);
                     }
                     else
                     {
-                        SerializeUInt(stream, uint.Parse((component as FallbackSerializedType).name));
+                        SerializeUInt(stream, uint.Parse((component as FallbackSerializedType).FALLBACKNAMEAAA));
                     }
                     //SerializeUInt(stream, Knowledge.KnownComponents.InverseKnowledge[(component as FallbackSerializedType).name]);
                 }
@@ -164,7 +164,7 @@ namespace PoiString
                 stream.AddRange((bool[])value);
                 ComponentSize += (uint)((bool[])value).Length;
             }
-            else if (type == typeof(string) && fieldname == "name" && type == typeof(FallbackSerializedType))
+            else if (type == typeof(string) && fieldname == "FALLBACKNAMEAAA")
             {
                 //ignore
             }
@@ -177,6 +177,10 @@ namespace PoiString
             {
                 SerializeTimeSpan(stream, (TimeSpan)value);
                 ComponentSize += 64;
+            }
+            else if (type == typeof(List<IATTSerializable>))
+            {
+                SerializeBsery(stream, type, (List<IATTSerializable>)value, ref ComponentSize, StringPos);
             }
             else if (type.IsArray && type.Namespace == type.Namespace)
             {
@@ -191,11 +195,53 @@ namespace PoiString
                 throw new Exception($"no serializer found for type {type.Name}");
             }
         }
+        private static void SerializeBsery(List<bool> stream, Type type, List<IATTSerializable> ToSerialize, ref uint componentSize, int StringPos)
+        {
+            SerializeInt(stream, ToSerialize.Count);
+            componentSize += 32;
+
+            for (int i = 0; i < ToSerialize.Count; i++)
+            {
+                uint ComponentSize = 0;
+                List<bool> substream = new List<bool>();
+                if (ToSerialize[i] is FallbackSerializedType)
+                {
+                    if (Knowledge.KnownComponents.InverseKnowledge.TryGetValue((ToSerialize[i] as FallbackSerializedType).FALLBACKNAMEAAA, out uint value))
+                    {
+                        SerializeUInt(stream, value);
+                        componentSize += 32;
+                    }
+                    else
+                    {
+                        SerializeUInt(stream, uint.Parse((ToSerialize[i] as FallbackSerializedType).FALLBACKNAMEAAA));
+                        componentSize += 32;
+                    }
+                    //SerializeUInt(stream, Knowledge.KnownComponents.InverseKnowledge[(component as FallbackSerializedType).name]);
+                }
+                else
+                {
+                    string name = ToSerialize[i].GetType().Name;
+                    SerializeUInt(stream, Knowledge.KnownComponents.InverseKnowledge[name]);
+                    componentSize += 32;
+                }
+
+                foreach (FieldInfo val in ToSerialize[i].GetSerializableFields())
+                {
+                    SerializeField(substream, val, ToSerialize[i], ref ComponentSize, stream.Count);
+                }
+                SerializeUInt(stream, ComponentSize);
+                componentSize += 32;
+                (ToSerialize[i] as ATTSerializableComponent).BitSize = ComponentSize;
+                stream.AddRange(substream);
+
+                componentSize += ComponentSize;
+            }
+        }
         private static void SerializeArray(List<bool> stream, Type type, System.Collections.IList ToSerialize, ref uint componentSize, int StringPos)
         {
             //array length
             uint length = 0;
-            if(ToSerialize != null)
+            if (ToSerialize != null)
             {
                 length = (uint)ToSerialize.Count;
             }
@@ -264,7 +310,7 @@ namespace PoiString
             ComponentLength += 16;
 
             //uint length = ReadUint16();
-            
+
             if (ToSerialize.Length == 0)
             {
                 return ComponentLength;
@@ -306,7 +352,7 @@ namespace PoiString
             //i think its better now
             if (j != ToSerialize.Length)
             {
-                
+
                 for (; j < ToSerialize.Length; j++)
                 {
                     correctedOutput += ToSerialize[j];

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace PoiString.AttTypes.Components
 {
+    [System.Serializable]
     [Version(1)]
     public class SentGift : ATTSerializableComponent
     {
@@ -22,11 +23,13 @@ namespace PoiString.AttTypes.Components
         public SentGiftTag senderTag;
     }
 
+    [System.Serializable]
     public class SentGiftTag
     {
         public int from;
         public int to;
     }
+    [System.Serializable]
     public class SavableSavedDynamicObject
     {
         public uint[] darta;

@@ -70,12 +70,12 @@ namespace PoiString
             EthynReader reader = new EthynReader(Stream);
 
 
-            return DecodePrefab(reader);
+            return DecodePrefabFromBinaryStream(reader);
         }
 
 
 
-        private static NetworkPrefab DecodePrefab(EthynReader reader)
+        public static NetworkPrefab DecodePrefabFromBinaryStream(EthynReader reader)
         {
             NetworkPrefab Output = new NetworkPrefab();
             Output.PrefabHash = reader.ReadUint();
@@ -90,7 +90,6 @@ namespace PoiString
             //Output += "Component: " + reader.ReadUint() + "\n";
             //uint componentsize = reader.ReadUint();
             //Output += "ComponentSize: " + componentsize + "\n";
-
 
             //Output += "Data: " + reader.Read((int)componentsize).BoolArrayToString() + "\n";
             List<ATTSerializableComponent> components = DecodeComponent(reader);
@@ -129,7 +128,7 @@ namespace PoiString
                 ChildNetworkPrefab ThisChild = new ChildNetworkPrefab();
 
                 ThisChild.parentHash = reader.ReadUint();
-                ThisChild.Prefab = DecodePrefab(reader);
+                ThisChild.Prefab = DecodePrefabFromBinaryStream(reader);
 
                 Output.Add(ThisChild);
 
@@ -193,7 +192,6 @@ namespace PoiString
             uint componenthash = reader.ReadUint();
             if (componenthash != 0)
             {
-
                 if (KnownComponents.Knowledge.TryGetValue(componenthash, out string ATTTypeName))
                 {
 

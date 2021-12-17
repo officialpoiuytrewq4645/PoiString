@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace PoiString.AttTypes.Components
 {
-    public class HeatSourceBase : ATTSerializableComponent
+	[System.Serializable]
+	public class HeatSourceBase : ATTSerializableComponent
     {
 		public bool isLit;
 		public float progress;

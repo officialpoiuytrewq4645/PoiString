@@ -6,19 +6,21 @@ using System.Threading.Tasks;
 
 namespace PoiString.AttTypes.Components
 {
-    public class RepairBox : ATTSerializableComponent
+	[System.Serializable]
+	public class RepairBox : ATTSerializableComponent
     {
         public Item[] items;
         public bool isRepeatable;
         public bool isDone;
         public Vector3 spawnPosition;
 		public Quaternion spawnRotation;
-		public NetworkPrefab spawning;
+		public uint spawning;
 		public uint staticHash;
 		public bool canBeUndone;
 		public uint spawningDataHash;
-		
+
 	}
+	[System.Serializable]
 	public class Item
 	{
 		public uint itemHash;

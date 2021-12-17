@@ -159,9 +159,10 @@ namespace PoiString
             foreach(uint value in uints)
             {
                 Output += $"{value},";
-            }
+            } 
             return Output;
         }
+        
         public static uint[] StreamToAttUintArray(List<bool> stream)
         {
             uint[] ATTString = new uint[(int)Math.Ceiling((double)stream.Count / 32) + 2];

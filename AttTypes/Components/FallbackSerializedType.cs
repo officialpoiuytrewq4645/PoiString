@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 
 namespace PoiString.AttTypes.Components
 {
+    [System.Serializable]
     public class FallbackSerializedType : ATTSerializableComponent
     {
-        public string name;
+        public string FALLBACKNAMEAAA;
         //public string data;
         public bool[] data;
         public FallbackSerializedType(EthynReader reader, string name)
         {
-            this.name = name;
+            this.FALLBACKNAMEAAA = name;
             BitSize = reader.ReadUint();
             data = reader.Read(BitSize);
         }

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace PoiString.AttTypes.Components
 {
     [System.Serializable]
-    public class WoodcutTree : ATTSerializableComponent
+    public class Lever : ATTSerializableComponent
     {
-        public uint PresetHash;
-        public uint SpeciesHash;
+        public bool toggleSaved;
+        public bool syncWithSenderSaved;
     }
 }

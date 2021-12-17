@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace PoiString.AttTypes.Components
 {
-    public class LogicBoolReceiver : ATTSerializableComponent
+    [System.Serializable]
+    public class Trigger : ATTSerializableComponent
     {
-        public uint sender;
+        public bool toggleSaved;
+        public bool syncWithSenderSaved;
     }
 }
